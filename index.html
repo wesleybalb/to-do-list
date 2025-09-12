@@ -1,79 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TO-DO List MVC</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/components.css">
-    <link rel="stylesheet" href="styles/responsive.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/responsive.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>📋 TO-DO List</h1>
-        
-        <div class="add-task-form">
-            <input type="text" id="taskInput" placeholder="Digite a descrição da tarefa...">
-            <button onclick="controller.addTask()">➕ Adicionar</button>
+      <h1>📋 TO-DO List</h1>
+
+      <div class="add-task-form">
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Digite a descrição da tarefa..."
+        />
+        <button onclick="controller.addTask()">➕ Adicionar</button>
+      </div>
+
+      <div class="stats" id="stats">
+        <div class="stat">
+          <div class="stat-number" id="todoCount">0</div>
+          <div class="stat-label">Para Fazer</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="progressCount">0</div>
+          <div class="stat-label">Em Progresso</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="doneCount">0</div>
+          <div class="stat-label">Concluídas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="totalCount">0</div>
+          <div class="stat-label">Total</div>
+        </div>
+      </div>
+
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">Todas</button>
+        <button class="filter-btn" data-filter="todo">Para Fazer</button>
+        <button class="filter-btn" data-filter="progress">Em Progresso</button>
+        <button class="filter-btn" data-filter="done">Concluídas</button>
+      </div>
+
+      <div class="board">
+        <div class="column">
+          <div class="column-header todo-header">📝 Para Fazer</div>
+          <div class="task-list" id="todo-list" data-status="todo">
+            <div class="empty-state">Nenhuma tarefa para fazer</div>
+          </div>
         </div>
 
-        <div class="stats" id="stats">
-            <div class="stat">
-                <div class="stat-number" id="todoCount">0</div>
-                <div class="stat-label">Para Fazer</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number" id="progressCount">0</div>
-                <div class="stat-label">Em Progresso</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number" id="doneCount">0</div>
-                <div class="stat-label">Concluídas</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number" id="totalCount">0</div>
-                <div class="stat-label">Total</div>
-            </div>
+        <div class="column">
+          <div class="column-header progress-header">⏳ Em Progresso</div>
+          <div class="task-list" id="progress-list" data-status="progress">
+            <div class="empty-state">Nenhuma tarefa em progresso</div>
+          </div>
         </div>
 
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">Todas</button>
-            <button class="filter-btn" data-filter="todo">Para Fazer</button>
-            <button class="filter-btn" data-filter="progress">Em Progresso</button>
-            <button class="filter-btn" data-filter="done">Concluídas</button>
+        <div class="column">
+          <div class="column-header done-header">✅ Concluídas</div>
+          <div class="task-list" id="done-list" data-status="done">
+            <div class="empty-state">Nenhuma tarefa concluída</div>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="board">
-            <div class="column">
-                <div class="column-header todo-header">📝 Para Fazer</div>
-                <div class="task-list" id="todo-list" data-status="todo">
-                    <div class="empty-state">Nenhuma tarefa para fazer</div>
-                </div>
-            </div>
-            
-            <div class="column">
-                <div class="column-header progress-header">⏳ Em Progresso</div>
-                <div class="task-list" id="progress-list" data-status="progress">
-                    <div class="empty-state">Nenhuma tarefa em progresso</div>
-                </div>
-            </div>
-            
-            <div class="column">
-                <div class="column-header done-header">✅ Concluídas</div>
-                <div class="task-list" id="done-list" data-status="done">
-                    <div class="empty-state">Nenhuma tarefa concluída</div>
-                </div>
-            </div>
+    <div id="confirm-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <p id="confirm-message"></p>
+        <div class="modal-actions">
+          <button id="confirm-yes">Sim</button>
+          <button id="confirm-no">Não</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal de edição -->
+    <div id="edit-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <p>Digite a nova descrição:</p>
+        <input type="text" id="edit-input" />
+        <div class="modal-actions">
+          <button id="edit-save">Salvar</button>
+          <button id="edit-cancel">Cancelar</button>
+        </div>
+      </div>
     </div>
 
     <!-- Scripts dos módulos MVC -->
     <script src="js/models/Task.js"></script>
     <script src="js/models/TaskModel.js"></script>
     <script src="js/views/TaskView.js"></script>
+    <script src="js/controllers/modal.js"></script>
     <script src="js/controllers/TaskController.js"></script>
     <script src="js/utils/DragDropHandler.js"></script>
     <script src="js/utils/EventHandler.js"></script>
     <script src="js/app.js"></script>
-</body>
+  </body>
 </html>
