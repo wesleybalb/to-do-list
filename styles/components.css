@@ -1,0 +1,195 @@
+/* styles/components.css - Componentes */
+
+/* Formulário de Adição */
+.add-task-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.add-task-form input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.add-task-form input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.add-task-form button {
+    padding: 12px 24px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.add-task-form button:hover {
+    transform: translateY(-2px);
+}
+
+/* Filtros */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 2px solid #667eea;
+    background: transparent;
+    color: #667eea;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: #667eea;
+    color: white;
+}
+
+/* Estatísticas */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2em;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* Lista de Tarefas */
+.task-list {
+    min-height: 320px;
+    border: 2px dashed transparent;
+    border-radius: 10px;
+    padding: 10px;
+    transition: all 0.3s;
+}
+
+.task-list.drag-over {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* Items de Tarefa */
+.task-item {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: grab;
+    transition: all 0.3s;
+    border-left: 4px solid;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+.task-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.task-item.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+    cursor: grabbing;
+}
+
+.task-item[data-status="todo"] { 
+    border-left-color: #ff6b6b; 
+}
+
+.task-item[data-status="progress"] { 
+    border-left-color: #ffa726; 
+}
+
+.task-item[data-status="done"] { 
+    border-left-color: #66bb6a; 
+}
+
+/* Conteúdo da Tarefa */
+.task-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.task-description {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.task-id {
+    font-size: 12px;
+    color: #888;
+    font-weight: 600;
+}
+
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* Botões de Ação */
+.action-btn {
+    padding: 5px 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.edit-btn {
+    background: #ffa726;
+    color: white;
+}
+
+.delete-btn {
+    background: #e53e3e;
+    color: white;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+}

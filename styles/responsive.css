@@ -1,0 +1,156 @@
+/* styles/responsive.css - Responsividade */
+
+/* Tablets */
+@media (max-width: 968px) {
+    .container {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    .board {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 15px;
+    }
+}
+
+/* Smartphones */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+        border-radius: 15px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    
+    .board {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .add-task-form {
+        flex-direction: column;
+        padding: 15px;
+    }
+    
+    .add-task-form input,
+    .add-task-form button {
+        width: 100%;
+    }
+    
+    .stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .stat {
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+    }
+    
+    .filters {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .filter-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    
+    .column {
+        padding: 15px;
+        min-height: 300px;
+    }
+    
+    .column-header {
+        font-size: 1.1em;
+        padding: 8px;
+    }
+    
+    .task-item {
+        padding: 12px;
+    }
+    
+    .task-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .task-actions {
+        align-self: flex-end;
+    }
+}
+
+/* Smartphones pequenos */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+        margin: 5px;
+        border-radius: 10px;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .add-task-form {
+        padding: 10px;
+    }
+    
+    .stats {
+        padding: 10px;
+    }
+    
+    .stat-number {
+        font-size: 1.5em;
+    }
+    
+    .stat-label {
+        font-size: 10px;
+    }
+    
+    .column {
+        padding: 10px;
+        min-height: 250px;
+    }
+    
+    .task-item {
+        padding: 10px;
+    }
+    
+    .task-description {
+        font-size: 13px;
+    }
+    
+    .action-btn {
+        padding: 4px 6px;
+        font-size: 11px;
+    }
+}
+
+/* Telas muito grandes */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1400px;
+    }
+    
+    .board {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .column {
+        min-height: 500px;
+    }
+}
