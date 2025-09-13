@@ -208,10 +208,10 @@ class TaskModel {
      */
     saveTasks() {
         // Em um ambiente real, seria:
-        // localStorage.setItem(this.storageKey, JSON.stringify(this.tasks.map(task => task.toJSON())));
+        localStorage.setItem(this.storageKey, JSON.stringify(this.tasks.map(task => task.toJSON())));
         
         // Para artifacts, mantemos em memória
-        this._savedTasks = this.tasks.map(task => task.toJSON());
+        // this._savedTasks = this.tasks.map(task => task.toJSON());
     }
 
     /**
@@ -221,16 +221,16 @@ class TaskModel {
     loadTasks() {
         try {
             // Em um ambiente real, seria:
-            // const saved = localStorage.getItem(this.storageKey);
-            // if (saved) {
-            //     const tasksData = JSON.parse(saved);
-            //     this.tasks = tasksData.map(data => Task.fromJSON(data));
-            // }
+            const saved = localStorage.getItem(this.storageKey);
+            if (saved) {
+                const tasksData = JSON.parse(saved);
+                this.tasks = tasksData.map(data => Task.fromJSON(data));
+            }
 
             // Para artifacts, simulamos carregamento
-            if (this._savedTasks) {
-                this.tasks = this._savedTasks.map(data => Task.fromJSON(data));
-            }
+            // if (this._savedTasks) {
+            //     this.tasks = this._savedTasks.map(data => Task.fromJSON(data));
+            // }
         } catch (error) {
             console.error('Erro ao carregar tarefas:', error);
             this.tasks = [];

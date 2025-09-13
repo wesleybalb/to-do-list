@@ -1,3 +1,5 @@
+/* modal.js (robusto: remove todos os listeners e trata Enter/Escape) */
+
 function showConfirmModal(message) {
   return new Promise((resolve) => {
     const modal = document.getElementById('confirm-modal');
@@ -8,55 +10,58 @@ function showConfirmModal(message) {
     msg.textContent = message;
     modal.classList.remove('hidden');
 
+    // handlers nomeados para poder remover depois
+    const onYes = () => cleanup(true);
+    const onNo = () => cleanup(false);
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') cleanup(false);
+      if (e.key === 'Enter') cleanup(true);
+    };
+
     function cleanup(result) {
+      // esconder modal
       modal.classList.add('hidden');
+      // remover listeners
       yesBtn.removeEventListener('click', onYes);
       noBtn.removeEventListener('click', onNo);
+      document.removeEventListener('keydown', onKeyDown);
       resolve(result);
     }
 
-    function onYes() { cleanup(true); }
-    function onNo() { cleanup(false); }
-
     yesBtn.addEventListener('click', onYes);
     noBtn.addEventListener('click', onNo);
+    document.addEventListener('keydown', onKeyDown);
   });
 }
 
 function showEditModal(currentValue) {
   return new Promise((resolve) => {
-    const modal = document.getElementById("edit-modal");
-    const input = document.getElementById("edit-input");
-    const saveBtn = document.getElementById("edit-save");
-    const cancelBtn = document.getElementById("edit-cancel");
+    const modal = document.getElementById('edit-modal');
+    const input = document.getElementById('edit-input');
+    const saveBtn = document.getElementById('edit-save');
+    const cancelBtn = document.getElementById('edit-cancel');
 
-    input.value = currentValue || "";
-    modal.classList.remove("hidden");
-    input.focus();
+    input.value = currentValue || '';
+    modal.classList.remove('hidden');
+    setTimeout(() => input.focus(), 60); // garantir foco após animação/paint
+
+    const onSave = () => cleanup(input.value);
+    const onCancel = () => cleanup(null);
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') cleanup(null);
+      if (e.key === 'Enter') cleanup(input.value);
+    };
 
     function cleanup(result) {
-      modal.classList.add("hidden");
-      saveBtn.removeEventListener("click", onSave);
-      cancelBtn.removeEventListener("click", onCancel);
+      modal.classList.add('hidden');
+      saveBtn.removeEventListener('click', onSave);
+      cancelBtn.removeEventListener('click', onCancel);
+      input.removeEventListener('keydown', onKeyDown);
       resolve(result);
     }
 
-    function onSave() {
-      cleanup(input.value);
-    }
-
-    function onCancel() {
-      cleanup(null); // usuário cancelou
-    }
-
-    saveBtn.addEventListener("click", onSave);
-    cancelBtn.addEventListener("click", onCancel);
-
-    // permite confirmar com Enter
-    input.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        onSave();
-      }
-    });
+    saveBtn.addEventListener('click', onSave);
+    cancelBtn.addEventListener('click', onCancel);
+    input.addEventListener('keydown', onKeyDown);
   });
 }
