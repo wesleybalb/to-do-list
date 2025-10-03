@@ -193,3 +193,164 @@
 .action-btn:hover {
     transform: scale(1.1);
 }
+
+/* Estilos para o modal de detalhes */
+.task-details-modal-content {
+    max-width: 500px;
+    width: 90%;
+}
+
+.task-details-form {
+    margin: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.task-title-display {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #e9ecef;
+    color: #495057;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    transition: border-color 0.3s;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    background: #5a6268;
+}
+
+.task-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.task-urgency {
+    font-size: 16px;
+}
+
+.details-btn {
+    background: #17a2b8;
+    color: white;
+}
+
+.modal-overlay.closing {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Estilos para urgência nas tasks */
+.task-item[data-urgency="urgente"] {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #fff 0%, #ffebee 100%);
+}
+
+.task-item[data-urgency="normal"] {
+    border-left-color: #ffc107;
+}
+
+.task-item[data-urgency="baixa"] {
+    border-left-color: #28a745;
+}
+
+/* Botão de detalhes */
+.details-btn {
+    background: #17a2b8;
+    color: white;
+}
+
+.details-btn:hover {
+    background: #138496;
+}
+
+/* Meta informações da task */
+.task-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.task-urgency {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+/* Animação para tasks urgentes */
+.task-item[data-urgency="urgente"] {
+    animation: urgentPulse 2s infinite;
+}
+
+@keyframes urgentPulse {
+    0%, 100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+    50% { box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3); }
+}
