@@ -121,6 +121,42 @@ class TaskModel {
     }
 
     /**
+ * Atualiza os detalhes de uma tarefa (descrição detalhada e urgência)
+ * @param {number} id - ID da tarefa
+ * @param {string} detailedDescription - Nova descrição detalhada
+ * @param {string} urgencyLevel - Novo nível de urgência
+ * @returns {boolean} True se a tarefa foi atualizada
+ */
+updateTaskDetails(id, detailedDescription, urgencyLevel) {
+    const task = this.findTaskById(id);
+    
+    if (!task) {
+        console.error(`Tarefa com ID ${id} não encontrada`);
+        return false;
+    }
+
+    let updated = false;
+    
+    if (task.updateDetailedDescription(detailedDescription)) {
+        updated = true;
+    }
+    
+    if (task.updateUrgencyLevel(urgencyLevel)) {
+        updated = true;
+    }
+
+    if (updated) {
+        this.saveTasks();
+        this.notifyObservers();
+        return true;
+    }
+
+    return false;
+}
+
+    
+
+    /**
      * Remove uma tarefa
      * @param {number} id - ID da tarefa a ser removida
      * @returns {boolean} True se a tarefa foi removida
