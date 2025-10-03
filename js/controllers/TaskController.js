@@ -279,6 +279,46 @@ class TaskController {
   }
 
   /**
+ * Abre o modal de detalhes da tarefa
+ * @param {number} taskId - ID da tarefa
+ * @returns {boolean} True se o modal foi aberto
+ */
+async openTaskDetails(taskId) {
+    try {
+        const task = this.model.findTaskById(taskId);
+
+        if (!task) {
+            this.view.showMessage("Tarefa não encontrada", "error");
+            return false;
+        }
+
+        const result = await showTaskDetailsModal(task);
+
+        if (result && (result.detailedDescription !== null || result.urgencyLevel !== null)) {
+            const success = this.model.updateTaskDetails(
+                taskId, 
+                result.detailedDescription || task.detailedDescription,
+                result.urgencyLevel || task.urgencyLevel
+            );
+
+            if (success) {
+                this.view.showMessage("Detalhes da tarefa atualizados!", "success");
+                return true;
+            } else {
+                this.view.showMessage("Nenhuma alteração foi feita", "info");
+                return false;
+            }
+        }
+
+        return false;
+    } catch (error) {
+        console.error("Erro ao abrir detalhes da tarefa:", error);
+        this.view.showMessage("Erro inesperado ao abrir detalhes", "error");
+        return false;
+    }
+}
+
+  /**
    * Move uma tarefa para uma nova posição
    * @param {number} taskId - ID da tarefa
    * @param {number} newIndex - Nova posição
