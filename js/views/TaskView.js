@@ -182,35 +182,51 @@ class TaskView {
      * @param {Task} task - Objeto da tarefa
      * @returns {string} HTML da tarefa
      */
-    createTaskHTML(task) {
-        const timeAgo = task.getTimeAgo();
-        const formattedId = task.getFormattedId();
+   createTaskHTML(task) {
+    const timeAgo = task.getTimeAgo();
+    const formattedId = task.getFormattedId();
+    
+    // 🆕 ADICIONAR INDICADOR DE URGÊNCIA
+    const urgencyIcon = {
+        'baixa': '🟢',
+        'normal': '🟡', 
+        'urgente': '🔴'
+    }[task.urgencyLevel] || '🟡';
 
-        return `
-            <div class="task-item" 
-                 data-task-id="${task.id}" 
-                 data-status="${task.status}"
-                 draggable="true"
-                 title="Criada ${timeAgo}">
-                <div class="task-content">
-                    <div class="task-description">${this.escapeHtml(task.description)}</div>
-                    <div class="task-id">${formattedId}</div>
-                </div>
-                <div class="task-actions">
-                    <button class="action-btn edit-btn" 
-                            onclick="window.taskController.editTask(${task.id})"
-                            title="Editar tarefa">
-                        ✏️
-                    </button>
-                    <button class="action-btn delete-btn" 
-                            onclick="window.taskController.deleteTask(${task.id})"
-                            title="Excluir tarefa">
-                        🗑️
-                    </button>
+    return `
+        <div class="task-item" 
+             data-task-id="${task.id}" 
+             data-status="${task.status}"
+             data-urgency="${task.urgencyLevel}"
+             draggable="true"
+             title="Criada ${timeAgo}">
+            <div class="task-content">
+                <div class="task-description">${this.escapeHtml(task.description)}</div>
+                <div class="task-meta">
+                    <span class="task-urgency" title="Urgência: ${task.urgencyLevel}">${urgencyIcon}</span>
+                    <span class="task-id">${formattedId}</span>
                 </div>
             </div>
-        `;
-    }
+            <div class="task-actions">
+                <button class="action-btn details-btn" 
+                        onclick="window.taskController.openTaskDetails(${task.id})"
+                        title="Ver/Editar detalhes">
+                    ℹ️
+                </button>
+                <button class="action-btn edit-btn" 
+                        onclick="window.taskController.editTask(${task.id})"
+                        title="Editar tarefa">
+                    ✏️
+                </button>
+                <button class="action-btn delete-btn" 
+                        onclick="window.taskController.deleteTask(${task.id})"
+                        title="Excluir tarefa">
+                    🗑️
+                </button>
+            </div>
+        </div>
+    `;
+}
 
     /**
      * Renderiza as estatísticas
