@@ -15,6 +15,8 @@ class Task {
         this.status = 'todo'; // Estados possíveis: 'todo', 'progress', 'done'
         this.createdAt = new Date();
         this.updatedAt = new Date();
+        this.detailedDescription = '';
+        this.urgencyLevel = 'normal'; // 'baixa', 'normal', 'urgente
     }
 
     /**
@@ -69,49 +71,96 @@ class Task {
         return false;
     }
 
+/** * Atualiza a descrição detalhada da tarefa
+ * @param {string} newDetailedDescription - Nova descrição detalhada
+ * @returns {boolean} True se foi atualizada com sucesso
+ */
+updateDetailedDescription(newDetailedDescription) {
+    const trimmedDescription = (newDetailedDescription || '').trim();
+    
+    if (this.detailedDescription !== trimmedDescription) {
+        this.detailedDescription = trimmedDescription;
+        this.updatedAt = new Date();
+        return true;
+    }
+    
+    return false;
+}
+
+/**
+ * Atualiza o nível de urgência da tarefa
+ * @param {string} newUrgencyLevel - Novo nível ('baixa', 'normal', 'urgente')
+ * @returns {boolean} True se foi atualizado com sucesso
+ */
+updateUrgencyLevel(newUrgencyLevel) {
+    const validLevels = ['baixa', 'normal', 'urgente'];
+    
+    if (!validLevels.includes(newUrgencyLevel)) {
+        console.error(`Nível de urgência inválido: ${newUrgencyLevel}`);
+        return false;
+    }
+
+    if (this.urgencyLevel !== newUrgencyLevel) {
+        this.urgencyLevel = newUrgencyLevel;
+        this.updatedAt = new Date();
+        return true;
+    }
+    
+    return false;
+}
+
     /**
      * Retorna uma representação simplificada da tarefa para serialização
      * @returns {Object} Objeto com os dados da tarefa
      */
-    toJSON() {
-        return {
-            id: this.id,
-            description: this.description,
-            status: this.status,
-            createdAt: this.createdAt.toISOString(),
-            updatedAt: this.updatedAt.toISOString()
-        };
-    }
+toJSON() {
+    return {
+        id: this.id,
+        description: this.description,
+        detailedDescription: this.detailedDescription, // 🆕 ADICIONAR
+        urgencyLevel: this.urgencyLevel, // 🆕 ADICIONAR
+        status: this.status,
+        createdAt: this.createdAt.toISOString(),
+        updatedAt: this.updatedAt.toISOString()
+    };
+}
 
     /**
      * Cria uma instância de Task a partir de dados serializados
      * @param {Object} data - Dados da tarefa
      * @returns {Task} Nova instância de Task
      */
-    static fromJSON(data) {
-        const task = Object.create(Task.prototype);
-        task.id = data.id;
-        task.description = data.description;
-        task.status = data.status;
-        task.createdAt = new Date(data.createdAt);
-        task.updatedAt = new Date(data.updatedAt);
-        return task;
-    }
+static fromJSON(data) {
+    const task = Object.create(Task.prototype);
+    task.id = data.id;
+    task.description = data.description;
+    task.detailedDescription = data.detailedDescription || ''; // 🆕 ADICIONAR
+    task.urgencyLevel = data.urgencyLevel || 'normal'; // 🆕 ADICIONAR
+    task.status = data.status;
+    task.createdAt = new Date(data.createdAt);
+    task.updatedAt = new Date(data.updatedAt);
+    return task;
+}
 
     /**
      * Valida se os dados de uma tarefa são válidos
      * @param {Object} data - Dados para validação
      * @returns {boolean} True se os dados são válidos
      */
-    static isValidTaskData(data) {
-        return (
-            data &&
-            typeof data.id === 'number' &&
-            typeof data.description === 'string' &&
-            data.description.trim() !== '' &&
-            ['todo', 'progress', 'done'].includes(data.status)
-        );
-    }
+static isValidTaskData(data) {
+    const validUrgencyLevels = ['baixa', 'normal', 'urgente'];
+    
+    return (
+        data &&
+        typeof data.id === 'number' &&
+        typeof data.description === 'string' &&
+        data.description.trim() !== '' &&
+        ['todo', 'progress', 'done'].includes(data.status) &&
+        // 🆕 ADICIONAR VALIDAÇÕES:
+        (data.detailedDescription === undefined || typeof data.detailedDescription === 'string') &&
+        (data.urgencyLevel === undefined || validUrgencyLevels.includes(data.urgencyLevel))
+    );
+}
 
     /**
      * Retorna o ID formatado para exibição
