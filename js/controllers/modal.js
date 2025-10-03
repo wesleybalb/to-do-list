@@ -103,7 +103,7 @@ function showTaskDetailsModal(task) {
                                     🟡 Normal
                                 </option>
                                 <option value="urgente" ${task.urgencyLevel === 'urgente' ? 'selected' : ''}>
-                                    �� Urgente
+                                    🔴 Urgente
                                 </option>
                             </select>
                         </div>
