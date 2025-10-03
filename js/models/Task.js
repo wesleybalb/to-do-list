@@ -17,6 +17,7 @@ class Task {
         this.updatedAt = new Date();
         this.detailedDescription = '';
         this.urgencyLevel = 'normal'; // 'baixa', 'normal', 'urgente
+        this.priority = 'normal'; // 🆕 ADICIONAR: 'urgente', 'normal', 'baixa'
     }
 
     /**
@@ -110,6 +111,67 @@ updateUrgencyLevel(newUrgencyLevel) {
 }
 
     /**
+ * Atualiza a prioridade da tarefa
+ * @param {string} newPriority - Nova prioridade ('urgente', 'normal', 'baixa')
+ * @returns {boolean} True se foi atualizada com sucesso
+ */
+updatePriority(newPriority) {
+    const validPriorities = ['urgente', 'normal', 'baixa'];
+    
+    if (!validPriorities.includes(newPriority)) {
+        console.error(`Prioridade inválida: ${newPriority}`);
+        return false;
+    }
+
+    if (this.priority !== newPriority) {
+        this.priority = newPriority;
+        this.updatedAt = new Date();
+        return true;
+    }
+    
+    return false;
+}
+
+/**
+ * Retorna o valor numérico da prioridade para ordenação
+ * @returns {number} Valor numérico (3=urgente, 2=normal, 1=baixa)
+ */
+getPriorityValue() {
+    const priorityValues = {
+        'urgente': 3,
+        'normal': 2,
+        'baixa': 1
+    };
+    return priorityValues[this.priority] || 2;
+}
+
+/**
+ * Retorna o ícone da prioridade
+ * @returns {string} Emoji do ícone
+ */
+getPriorityIcon() {
+    const priorityIcons = {
+        'urgente': '🔥',
+        'normal': '📋',
+        'baixa': '📝'
+    };
+    return priorityIcons[this.priority] || '📋';
+}
+
+/**
+ * Retorna a cor da prioridade
+ * @returns {string} Código da cor
+ */
+getPriorityColor() {
+    const priorityColors = {
+        'urgente': '#dc3545',
+        'normal': '#ffc107', 
+        'baixa': '#28a745'
+    };
+    return priorityColors[this.priority] || '#ffc107';
+}
+
+    /**
      * Retorna uma representação simplificada da tarefa para serialização
      * @returns {Object} Objeto com os dados da tarefa
      */
@@ -117,8 +179,9 @@ toJSON() {
     return {
         id: this.id,
         description: this.description,
-        detailedDescription: this.detailedDescription, // 🆕 ADICIONAR
-        urgencyLevel: this.urgencyLevel, // 🆕 ADICIONAR
+        detailedDescription: this.detailedDescription,
+        urgencyLevel: this.urgencyLevel,
+        priority: this.priority, // 🆕 ADICIONAR
         status: this.status,
         createdAt: this.createdAt.toISOString(),
         updatedAt: this.updatedAt.toISOString()
@@ -134,8 +197,9 @@ static fromJSON(data) {
     const task = Object.create(Task.prototype);
     task.id = data.id;
     task.description = data.description;
-    task.detailedDescription = data.detailedDescription || ''; // 🆕 ADICIONAR
-    task.urgencyLevel = data.urgencyLevel || 'normal'; // 🆕 ADICIONAR
+    task.detailedDescription = data.detailedDescription || '';
+    task.urgencyLevel = data.urgencyLevel || 'normal';
+    task.priority = data.priority || 'normal'; // 🆕 ADICIONAR
     task.status = data.status;
     task.createdAt = new Date(data.createdAt);
     task.updatedAt = new Date(data.updatedAt);
@@ -149,6 +213,7 @@ static fromJSON(data) {
      */
 static isValidTaskData(data) {
     const validUrgencyLevels = ['baixa', 'normal', 'urgente'];
+    const validPriorities = ['baixa', 'normal', 'urgente']; // 🆕 ADICIONAR
     
     return (
         data &&
@@ -156,9 +221,9 @@ static isValidTaskData(data) {
         typeof data.description === 'string' &&
         data.description.trim() !== '' &&
         ['todo', 'progress', 'done'].includes(data.status) &&
-        // 🆕 ADICIONAR VALIDAÇÕES:
         (data.detailedDescription === undefined || typeof data.detailedDescription === 'string') &&
-        (data.urgencyLevel === undefined || validUrgencyLevels.includes(data.urgencyLevel))
+        (data.urgencyLevel === undefined || validUrgencyLevels.includes(data.urgencyLevel)) &&
+        (data.priority === undefined || validPriorities.includes(data.priority)) // 🆕 ADICIONAR
     );
 }
 
